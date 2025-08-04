@@ -6,9 +6,9 @@ To pass grades back to Moodle, your twinery must call
 
 <script>
 set backToMoodle to {
-    score:7.8,
+    score:23,
     type:"twine_result",
-    feedback: "You have shown a quite aggressive and self-centered negotiation style"
+    feedback: "You are awesome"
 }
 window.parent.postMessage(State.variables.backToMoodle);
 </script>
