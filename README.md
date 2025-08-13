@@ -8,6 +8,7 @@ This activity allows you to implement single-file .html apps from https://twiner
 
 To pass grades back to Moodle, your twinery must call
 
+~~~
 <script>
 set backToMoodle to {
     type:"twine_result",
@@ -16,4 +17,4 @@ set backToMoodle to {
 }
 window.parent.postMessage(State.variables.backToMoodle);
 </script>
-
+~~~
