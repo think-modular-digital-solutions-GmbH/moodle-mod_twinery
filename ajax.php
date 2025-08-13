@@ -30,6 +30,14 @@ require_once(__DIR__ . '/lib.php');
 require_login();
 require_sesskey();
 
+// Only POST requests are allowed.
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    throw new moodle_exception('postonly');
+}
+
+
+header('Content-Type: application/json; charset=utf-8');
+
 // Parameters.
 global $DB, $USER;
 $cmid = required_param('cmid', PARAM_INT);
@@ -53,7 +61,10 @@ if ($attemptrecord = $DB->get_record('twinery_attempts', ['userid' => $USER->id,
 
 // Check if user has attempts left.
 if ($attempts >= $twinery->maxattempts) {
-    echo json_encode(['status' => 'nomoreattempts', 'message' => get_string('nomoreattempts', 'mod_twinery')]);
+    echo json_encode([
+        'status' => 'nomoreattempts',
+        'message' => get_string('nomoreattempts', 'mod_twinery')
+    ]);
     die();
 }
 
@@ -100,6 +111,11 @@ if ($twinery->maxattempts > 0) {
 twinery_grade_item_update($twinery, $gradeitem);
 
 // Much success. Very wow.
-echo json_encode(['status' => $status, 'message' => get_string($string, 'mod_twinery',
-    ['attempts' => $attempts, 'maxattempts' => $twinery->maxattempts])]);
+echo json_encode([
+    'status' => $status,
+    'message' => get_string($string, 'mod_twinery', [
+        'attempts' => $attempts,
+        'maxattempts' => $twinery->maxattempts
+    ])
+]);
 die();

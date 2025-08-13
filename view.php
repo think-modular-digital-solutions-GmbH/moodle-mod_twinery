@@ -88,6 +88,7 @@ if ($file && pathinfo($file->get_filename(), PATHINFO_EXTENSION) === 'html') {
     );
 
     echo html_writer::tag('iframe', '', [
+        'id' => 'twinery_iframe',
         'src' => $fileurl,
         'width' => '100%',
         'height' => '600px',
