@@ -18,5 +18,3 @@ set backToMoodle to {
 window.parent.postMessage(State.variables.backToMoodle);
 </script>
 ~~~
-
-Grading is not secured right now, so in theory, tech-savvy students can give themselves whatever grade they want, using JS.
