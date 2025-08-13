@@ -24,16 +24,19 @@
  */
 
 require(__DIR__ . '/../../config.php');
-$id = required_param('id', PARAM_INT); // Course module ID
 
+// Get parameters.
+$id = required_param('id', PARAM_INT); // Course module ID
 $cm = get_coursemodule_from_id('twinery', $id, 0, false, MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 $twinery = $DB->get_record('twinery', ['id' => $cm->instance], '*', MUST_EXIST);
 $context = context_module::instance($cm->id);
 
+// Check permissions.
 require_login($course, true, $cm);
 require_capability('mod/twinery:view', $context); // Optional: define in access.php
 
+// Set up page.
 $PAGE->set_url('/mod/twinery/view.php', ['id' => $id]);
 $PAGE->set_title(format_string($twinery->name));
 $PAGE->set_heading(format_string($course->fullname));
@@ -45,8 +48,21 @@ $PAGE->requires->data_for_js('M.cfg', [
 ]);
 $PAGE->requires->js(new moodle_url('/mod/twinery/js/grading.js'));
 
+// Start output.
 echo $OUTPUT->header();
 echo $OUTPUT->heading(format_string($twinery->name));
+
+// Check if we need to hide the Twinery activity based on max attempts.
+if ($twinery->maxattempts > 0 && $twinery->maxattemptsaction == MOD_TWINERY_MAXATTEMPTS_HIDE) {
+    $attemptrecord = $DB->get_record('twinery_attempts', ['userid' => $USER->id, 'twineryid' => $twinery->id]);
+    if ($attemptrecord && $attemptrecord->attempts >= $twinery->maxattempts) {
+
+        // Show nothing.
+        echo $OUTPUT->notification(get_string('nomoreattempts', 'mod_twinery'), 'notifyproblem');
+        echo $OUTPUT->footer();
+        die();
+    }
+}
 
 // Load the uploaded .html file
 $fs = get_file_storage();

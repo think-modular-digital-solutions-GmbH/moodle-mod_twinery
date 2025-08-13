@@ -23,11 +23,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['privacy:metadata'] = 'The Twinery plugin does not store any personal data.';
+// General strings.
 $string['pluginname'] = 'Twinery';
 $string['modulename'] = 'Twinery';
 $string['modulenameplural'] = 'Twinery';
+$string['modulename_help'] = 'The Twinery module allows you to create interactive stories using the Twine format. You can upload a Twine HTML file, which users can then play through, making choices that affect the outcome of the story.';
+$string['privacy:metadata'] = 'The Twinery plugin does not store any personal data.';
 $string['search:activity'] = 'Twinery';
+
+// Permissions.
+$string['twinery:addinstance'] = 'Add a new Twinery activity';
+$string['twinery:grade'] = 'Grade Twinery activity';
+$string['twinery:view'] = 'View Twinery activity';
+
+// Form.
 $string['file'] = 'Twinery html file';
+$string['gradesubmitted'] = 'Grade submitted successfully.';
+$string['gradesubmitted_attempts'] = 'Grade submitted successfully. Attempt {$a->attempts} of {$a->maxattempts}.';
+$string['maxattempts'] = 'Maximum attempts';
+$string['maxattempts_help'] = 'This setting defines how many attempts a user can make (ie how many times the Twinery can send back a grade). Leave at 0 for unlimited attempts.';
+$string['maxattemptsaction'] = 'Action when max attempts reached';
+$string['maxattemptsaction_show'] = 'Just stop Twinery from overwriting the grade';
+$string['maxattemptsaction_hide'] = 'Hide Twinery completely';
+$string['nomoreattempts'] = 'You have no more attempts left to get a grade for this Twinery activity.';
 $string['pluginadministration'] = 'Edit';
-$string['gradesubmitted'] = 'Grade submitted successfully';
+

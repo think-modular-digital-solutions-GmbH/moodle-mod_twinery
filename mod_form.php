@@ -54,6 +54,23 @@ class mod_twinery_mod_form extends moodleform_mod {
             ['maxbytes' => 0, 'accepted_types' => '.html']);
         $mform->addRule('twinery_file', get_string('required'), 'required', null, 'client');
 
+        // Max attempts for grading.
+        $mform->addElement('text', 'maxattempts', get_string('maxattempts', 'mod_twinery'));
+        $mform->setType('maxattempts', PARAM_INT);
+        $mform->setDefault('maxattempts', 0);
+        $mform->addRule('maxattempts', null, 'numeric', null, 'client');
+        $mform->addRule('maxattempts', get_string('required'), 'required', null, 'client');
+        $mform->addHelpButton('maxattempts', 'maxattempts', 'mod_twinery');
+
+        // Action when max attempts are reached.
+        $mform->addElement('select', 'maxattemptsaction', get_string('maxattemptsaction', 'mod_twinery'),
+            [
+                MOD_TWINERY_MAXATTEMPTS_SHOW => get_string('maxattemptsaction_show', 'mod_twinery'),
+                MOD_TWINERY_MAXATTEMPTS_HIDE => get_string('maxattemptsaction_hide', 'mod_twinery'),
+            ]);
+        $mform->setType('maxattemptsaction', PARAM_INT);
+        $mform->setDefault('maxattemptsaction', MOD_TWINERY_MAXATTEMPTS_SHOW);
+
         $this->standard_grading_coursemodule_elements();
         $this->standard_coursemodule_elements();
         $this->add_action_buttons(true, false, null);

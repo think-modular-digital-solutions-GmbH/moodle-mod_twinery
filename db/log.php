@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of log events.
+ * Definition of log events for mod_twinery.
  *
  * @package    mod_twinery
  * @author     Stefan Weber (stefan.weber@think-modular.com)

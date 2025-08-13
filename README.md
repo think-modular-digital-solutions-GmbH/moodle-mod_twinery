@@ -1,13 +1,17 @@
 # Twinery activity
 
-This activity allows you to implement single-file .html apps from https://twinery.org/.
+## Description
+
+This activity allows you to implement single-file .html apps from https://twinery.org/ as a activity in a course.
+
+## How to implement Grading
 
 To pass grades back to Moodle, your twinery must call
 
 <script>
 set backToMoodle to {
-    score:23,
     type:"twine_result",
+    score:23,
     feedback: "You are awesome"
 }
 window.parent.postMessage(State.variables.backToMoodle);

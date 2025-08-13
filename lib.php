@@ -25,6 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+define('MOD_TWINERY_MAXATTEMPTS_SHOW', 0); // Show activity when max attempts is reached.
+define('MOD_TWINERY_MAXATTEMPTS_HIDE', 1); // Hide activity when max attempts is reached.
+
 /**
  * List of features supported in the Twinery module
  * @param string $feature FEATURE_xx constant for requested feature

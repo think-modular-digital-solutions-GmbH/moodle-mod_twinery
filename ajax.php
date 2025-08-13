@@ -26,13 +26,17 @@ define('AJAX_SCRIPT', true);
 require(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/lib.php');
 
+// Check user.
 require_login();
 require_sesskey();
 
+// Parameters.
+global $DB, $USER;
 $cmid = required_param('cmid', PARAM_INT);
 $grade = required_param('grade', PARAM_FLOAT);
 $feedback = required_param('feedback', PARAM_TEXT);
 
+// Check permissions.
 $cm = get_coursemodule_from_id('twinery', $cmid, 0, false, MUST_EXIST);
 $context = context_module::instance($cm->id);
 require_capability('mod/twinery:grade', $context);
@@ -40,7 +44,20 @@ require_capability('mod/twinery:grade', $context);
 // Get twinery instance
 $twinery = $DB->get_record('twinery', ['id' => $cm->instance], '*', MUST_EXIST);
 
-// Push the grade
+// Get attempts.
+if ($attemptrecord = $DB->get_record('twinery_attempts', ['userid' => $USER->id, 'twineryid' => $twinery->id])) {
+    $attempts = $attemptrecord->attempts;
+} else {
+    $attempts = 0;
+}
+
+// Check if user has attempts left.
+if ($attempts >= $twinery->maxattempts) {
+    echo json_encode(['status' => 'nomoreattempts', 'message' => get_string('nomoreattempts', 'mod_twinery')]);
+    die();
+}
+
+// Push the grade.
 $gradeitem = [
     'userid' => $USER->id,
     'rawgrade' => $grade,
@@ -48,7 +65,41 @@ $gradeitem = [
     'feedbackformat' => FORMAT_HTML,
 ];
 
+// Add attempt to the database.
+$attempts++;
+if ($attemptrecord) {
+    $attemptrecord->timemodified = time();
+    $attemptrecord->attempts = $attempts;
+    $DB->update_record('twinery_attempts', $attemptrecord);
+} else {
+    $newattempt = new stdClass();
+    $newattempt->twineryid = $twinery->id;
+    $newattempt->userid = $USER->id;
+    $newattempt->attempts = $attempts;
+    $newattempt->timecreated = time();
+    $newattempt->timemodified = time();
+    $DB->insert_record('twinery_attempts', $newattempt);
+}
+
+// Do we have limited attempts?
+if ($twinery->maxattempts > 0) {
+    $string = 'gradesubmitted_attempts';
+
+    // Is this the last attempt?
+    if ($attempts >= $twinery->maxattempts) {
+        $status = 'lastattempt';
+    } else {
+        $status = 'nextattempt';
+    }
+} else {
+    $string = 'gradesubmitted';
+    $status = 'success';
+}
+
+// Update the grade item for the Twinery module.
 twinery_grade_item_update($twinery, $gradeitem);
 
-echo json_encode(['status' => 'success', 'message' => get_string('gradesubmitted', 'mod_twinery')]);
+// Much success. Very wow.
+echo json_encode(['status' => $status, 'message' => get_string($string, 'mod_twinery',
+    ['attempts' => $attempts, 'maxattempts' => $twinery->maxattempts])]);
 die();
