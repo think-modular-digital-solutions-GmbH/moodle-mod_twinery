@@ -42,7 +42,7 @@
         <KEY NAME="tw_fk_user" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="uniq_attempt_per_user" UNIQUE="true" FIELDS="twineryid, userid, attempt"/>
+        <INDEX NAME="uniq_attempt_per_user" UNIQUE="true" FIELDS="twineryid, userid, attempts"/>
       </INDEXES>
     </TABLE>
 
