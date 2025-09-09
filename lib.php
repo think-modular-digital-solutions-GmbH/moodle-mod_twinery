@@ -64,16 +64,18 @@ function twinery_add_instance($data, $form) {
     $data->id = $DB->insert_record('twinery', $data);
 
     // Save uploaded file.
-    $cmid = $form->get_coursemodule()->id;
-    $context = context_module::instance($cmid);
-    file_save_draft_area_files(
-        $data->twinery_file,  // draft item id
-        $context->id,
-        'mod_twinery',
-        'twinery_file', // file area
-        $data->id,
-        ['subdirs' => 0]
-    );
+    if (!empty($data->coursemodule)) {
+        $cmid = $data->coursemodule;
+        $context = context_module::instance($cmid);
+        file_save_draft_area_files(
+            $data->twinery_file,  // draft item id
+            $context->id,
+            'mod_twinery',
+            'twinery_file', // file area
+            $data->id,
+            ['subdirs' => 0]
+        );
+    }
 
     twinery_grade_item_update($data); // ← this updates the gradebook
 
