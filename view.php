@@ -41,7 +41,7 @@ $PAGE->set_url('/mod/twinery/view.php', ['id' => $id]);
 $PAGE->set_title(format_string($twinery->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
-$PAGE->requires->data_for_js('M.cfg', [
+$PAGE->requires->data_for_js('mod_twinery', [
     'cmid' => $cm->id,
     'sesskey' => sesskey(),
     'wwwroot' => $CFG->wwwroot,

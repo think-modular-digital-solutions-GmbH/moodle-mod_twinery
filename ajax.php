@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     throw new moodle_exception('postonly');
 }
 
-
 header('Content-Type: application/json; charset=utf-8');
 
 // Parameters.

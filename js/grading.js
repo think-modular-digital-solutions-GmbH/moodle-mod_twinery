@@ -1,4 +1,8 @@
+console.log('Listening for messages from Twinery iframe for grading...');
+
 window.addEventListener("message", function(event) {
+
+  console.log('Received message from Twinery iframe:', event);
 
   // Verify the origin of the message.
   const iframe = document.getElementById('twinery_iframe');
@@ -13,16 +17,16 @@ window.addEventListener("message", function(event) {
   let feedback = event.data.feedback;
 
   if (grade) {
-    let url = M.cfg.wwwroot + '/mod/twinery/ajax.php?cmid=' + M.cfg.cmid + '&grade=' + grade + '&feedback=' + feedback + '&sesskey=' + M.cfg.sesskey
+    let url = mod_twinery.wwwroot + '/mod/twinery/ajax.php?cmid=' + mod_twinery.cmid + '&grade=' + grade + '&feedback=' + feedback + '&sesskey=' + mod_twinery.sesskey
     fetch(url, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       credentials: 'same-origin', // send Moodle session cookie
       body: JSON.stringify({
-        cmid: M.cfg.cmid,
+        cmid: mod_twinery.cmid,
         grade,
         feedback,
-        sesskey: M.cfg.sesskey
+        sesskey: mod_twinery.sesskey
       })
     })
       .then(r => r.json())
