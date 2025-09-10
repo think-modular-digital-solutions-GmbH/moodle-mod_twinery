@@ -32,6 +32,7 @@ window.addEventListener("message", function(event) {
       .then(r => r.json())
       .then(res => {
         // this.alert(res.message);
+        console.log(res.message);
 
         // Reload window, just in case twinery should not be shown any more after attempts are exhausted.
         if (res.status == 'lastattempt') {
