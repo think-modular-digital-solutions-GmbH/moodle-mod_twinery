@@ -31,9 +31,9 @@ require_login();
 require_sesskey();
 
 // Only POST requests are allowed.
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    throw new moodle_exception('postonly');
-}
+// if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+//     throw new moodle_exception('postonly');
+// }
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -59,7 +59,8 @@ if ($attemptrecord = $DB->get_record('twinery_attempts', ['userid' => $USER->id,
 }
 
 // Check if user has attempts left.
-if ($attempts >= $twinery->maxattempts) {
+$maxattempts = $twinery->maxattempts;
+if ($maxattempts > 0 && $attempts >= $maxattempts) {
     echo json_encode([
         'status' => 'nomoreattempts',
         'message' => get_string('nomoreattempts', 'mod_twinery')
