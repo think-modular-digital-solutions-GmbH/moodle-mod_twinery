@@ -115,6 +115,32 @@ function twinery_update_instance($data, $form) {
 }
 
 /**
+ * Update an existing instance of the Twinery module.
+ *
+ * @param stdClass $data Data submitted from the form.
+ * @param mod_twinery_mod_form $form The form instance.
+ * @return bool True on success, false on failure.
+ */
+function twinery_delete_instance($data, $form) {
+    global $DB;
+
+    if (! $twinery = $DB->get_record("twinery", array("id"=>$id))) {
+        return false;
+    }
+
+    $cm = get_coursemodule_from_instance('twinery', $id);
+    \core_completion\api::update_completion_date_event($cm->id, 'twinery', $id, null);
+
+    $result = true;
+
+    if (! $DB->delete_records("twinery", array("id"=>$twinery->id))) {
+        $result = false;
+    }
+
+    return $result;
+}
+
+/**
  * Update the grade item for the Twinery module.
  *
  * @param stdClass $twinery The Twinery instance.
