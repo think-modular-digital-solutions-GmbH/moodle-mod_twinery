@@ -117,11 +117,10 @@ function twinery_update_instance($data, $form) {
 /**
  * Update an existing instance of the Twinery module.
  *
- * @param stdClass $data Data submitted from the form.
- * @param mod_twinery_mod_form $form The form instance.
+ * @param int $id The id of the instance to delete.
  * @return bool True on success, false on failure.
  */
-function twinery_delete_instance($data, $form) {
+function twinery_delete_instance($id) {
     global $DB;
 
     if (! $twinery = $DB->get_record("twinery", array("id"=>$id))) {
